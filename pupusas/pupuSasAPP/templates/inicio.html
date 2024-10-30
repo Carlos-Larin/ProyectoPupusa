@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,23 +8,23 @@
 </head>
 <body>
     <center>
-    <h1>Este es el menu de admin</h1>
+    <h1>OPCIONES</h1>
     <p style="color: crimson;">Bienvenido al menu principal</p>
-    <img src="static/imagenes/pupusas.png" width="200" height="210">
+    <img src="{% static 'imagenes/pupusas.png' %}" width="200" height="210">
 </center>
 
 <nav class="menu">
     <ul>
         <li>
-            <img src="static/imagenes/pagos.png"  >
+            <img src="{%static 'imagenes/pagos.png' %}"  >
             <a href="{% url 'pagos' %}">Pago</a>
         </li>
         <li>
-            <img src="static/imagenes/reportes.png"  >
+            <img src="{%static 'imagenes/reportes.png'%}"  >
             <a href="{% url 'reportes' %}">Reportes Ventas</a>
         </li>
         <li>
-            <img src="static/imagenes/inventario.png"  >
+            <img src="{%static 'imagenes/inventario.png'%}"  >
             <a href="{% url 'inventario' %}">Inventario</a>
         </li>
     

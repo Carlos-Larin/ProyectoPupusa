@@ -26,11 +26,11 @@ from pupuSasAPP import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('pagina/',views.index),
-    path('',views.home),
+    path('', views.sesion, name ='Login'),
+    path('home/',views.home, name ='home'),
     path('pagos/',views.pagos, name ='pagos'),
     path('reportes/', views.reportes, name ='reportes'),
-    path('inventario/', views.inven, name='inventario')
-
-
+    path('inventario/', views.inven, name='inventario'),
+    
     ]
 
