@@ -1,14 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago</title>
+    <title>Pupusería Juan Pérez</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b410e8;
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #FFB800;
+            padding: 20px;
+            width: 300px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .container input, .container select, .container button {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+        }
+        .container button {
+            background-color: #333;
+            color: #FFF;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>HACER LA BD PARA LA FACTURACION</h1>
-
+<div class="container">
+    <h2>Pupusería Juan Pérez</h2>
     
+    <label for="tipoPupusa">De qué es la Pupusa</label>
+    <select id="tipoPupusa" onchange="calcularTotal()">
+        <option value="0.35">Frijol $0.35</option>
+        <option value="0.50">Queso $0.50</option>
+        <option value="0.75">Revuelta $0.75</option>
+    </select>
+    <input type="number" id="cantidadPupusas" placeholder="Cantidad Pupusas" min="1" onchange="calcularTotal()">
+    
+    <label for="tipoBebida">Bebida</label>
+    <select id="tipoBebida" onchange="calcularTotal()">
+        <option value="0">Sin bebida</option>
+        <option value="0.25">Bolsa con agua $0.25</option>
+        <option value="0.50">Refresco $0.50</option>
+        <option value="1.00">Jugo Natural $1.00</option>
+    </select>
+    <input type="number" id="cantidadBebidas" placeholder="Cantidad Bebida" min="0" onchange="calcularTotal()">
+    
+    <input type="email" id="correoCliente" placeholder="Dirección de correo cliente">
+    
+    <div>
+        <label>Cuenta:</label>
+        <span id="cuenta">$0.00</span>
+    </div>
+    
+    <input type="number" id="pagaCon" placeholder="Paga con" min="0" onchange="calcularTotal()">
+    
+    <div>
+        <label>Total:</label>
+        <span id="total">$0.00</span>
+    </div>
+    
+    <button onclick="enviarRecibo()">Enviar Recibo</button>
+</div>
+
+<script>
+    function calcularTotal() {
+        const precioPupusa = parseFloat(document.getElementById("tipoPupusa").value);
+        const cantidadPupusas = parseInt(document.getElementById("cantidadPupusas").value) || 0;
+        const precioBebida = parseFloat(document.getElementById("tipoBebida").value);
+        const cantidadBebidas = parseInt(document.getElementById("cantidadBebidas").value) || 0;
+        const pagaCon = parseFloat(document.getElementById("pagaCon").value) || 0;
+
+        const cuenta = (precioPupusa * cantidadPupusas) + (precioBebida * cantidadBebidas);
+        document.getElementById("cuenta").textContent = `$${cuenta.toFixed(2)}`;
+
+        const total = pagaCon - cuenta;
+        document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+    }
+
+    function enviarRecibo() {
+        const correoCliente = document.getElementById("correoCliente").value;
+        const total = document.getElementById("total").textContent;
+
+        if (correoCliente && total) {
+            alert(`Recibo enviado a ${correoCliente} con el total de ${total}`);
+        } else {
+            alert("Por favor, completa todos los campos antes de enviar el recibo.");
+        }
+    }
+</script>
+
 </body>
 </html>
