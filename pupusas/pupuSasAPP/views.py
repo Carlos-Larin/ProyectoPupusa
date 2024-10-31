@@ -22,7 +22,18 @@ def sesion(request):
 
     return render(request, 'registration/login.html') 
 
-
+def pagos(request): 
+    if request.method == 'POST': 
+        cantidadPupusas = request.POST['cantidadPupusas'] 
+        tipopupusa = request.POST['tipoDePupusa'] 
+        cantidadBebida = request.POST['cantidadBebida'] 
+        tipoDeBebida=request.POST['tipoDeBebida'] 
+        correoCliente=request.POST['correoCliente'] 
+        pagaCon=request.POST['pagaCon'] 
+ 
+        return HttpResponse(tipopupusa) 
+         
+        tipopupusa=='tipoDePupusa'
 
 def home(request):
     return render(request,'inicio.html')
