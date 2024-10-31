@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,6 +46,7 @@
     <form method="POST" action="/pagos/">
     {% csrf_token %}
 
+    <!-- Sección de sabores de pupusas -->
     <div id="sabores-container">
         <label>De qué sabores son las Pupusas</label>
         <div class="sabor">
@@ -54,20 +54,27 @@
                 <option value="0.35">Frijol $0.35</option>
                 <option value="0.50">Queso $0.50</option>
                 <option value="0.75">Revuelta $0.75</option>
+                <option value="1.00">Loca $1.00</option>
             </select>
             <input type="number" placeholder="Cantidad" min="1" class="cantidadPupusas" onchange="calcularTotal()">
         </div>
     </div>
     <button type="button" onclick="agregarSabor()">Añadir otro sabor</button>
 
-    <label for="tipoBebida">Bebida</label>
-    <select id="tipoBebida" onchange="calcularTotal()">
-        <option value="0">Sin bebida</option>
-        <option value="0.25">Bolsa con agua $0.25</option>
-        <option value="0.50">Refresco $0.50</option>
-        <option value="1.00">Jugo Natural $1.00</option>
-    </select>
-    <input type="number" id="cantidadBebidas" placeholder="Cantidad Bebida" min="0" onchange="calcularTotal()">
+    <!-- Sección de bebidas -->
+    <div id="bebidas-container">
+        <label>Bebida</label>
+        <div class="bebida">
+            <select onchange="calcularTotal()" class="tipoBebida">
+                <option value="0">Sin bebida</option>
+                <option value="0.25">Bolsa con agua $0.25</option>
+                <option value="0.50">Refresco $0.50</option>
+                <option value="1.00">Jugo Natural $1.00</option>
+            </select>
+            <input type="number" placeholder="Cantidad" min="0" class="cantidadBebidas" onchange="calcularTotal()">
+        </div>
+    </div>
+    <button type="button" onclick="agregarBebida()">Añadir otra bebida</button>
 
     <input type="email" id="correoCliente" placeholder="Dirección de correo cliente">
     
@@ -88,6 +95,7 @@
 </div>
 
 <script>
+    // Función para agregar otra opción de sabor
     function agregarSabor() {
         const container = document.getElementById("sabores-container");
         const nuevoSabor = document.createElement("div");
@@ -97,14 +105,34 @@
                 <option value="0.35">Frijol $0.35</option>
                 <option value="0.50">Queso $0.50</option>
                 <option value="0.75">Revuelta $0.75</option>
+                <option value="1.00">Loca $1.00</option>
             </select>
             <input type="number" placeholder="Cantidad" min="1" class="cantidadPupusas" onchange="calcularTotal()">
         `;
         container.appendChild(nuevoSabor);
     }
 
+    // Función para agregar otra bebida
+    function agregarBebida() {
+        const container = document.getElementById("bebidas-container");
+        const nuevaBebida = document.createElement("div");
+        nuevaBebida.classList.add("bebida");
+        nuevaBebida.innerHTML = `
+            <select onchange="calcularTotal()" class="tipoBebida">
+                <option value="0">Sin bebida</option>
+                <option value="0.25">Bolsa con agua $0.25</option>
+                <option value="0.50">Refresco $0.50</option>
+                <option value="1.00">Jugo Natural $1.00</option>
+            </select>
+            <input type="number" placeholder="Cantidad" min="0" class="cantidadBebidas" onchange="calcularTotal()">
+        `;
+        container.appendChild(nuevaBebida);
+    }
+
+    // Función para calcular el total
     function calcularTotal() {
         const pupusas = document.querySelectorAll(".sabor");
+        const bebidas = document.querySelectorAll(".bebida");
         let cuenta = 0;
 
         pupusas.forEach(pupusa => {
@@ -113,9 +141,11 @@
             cuenta += precioPupusa * cantidadPupusas;
         });
 
-        const precioBebida = parseFloat(document.getElementById("tipoBebida").value);
-        const cantidadBebidas = parseInt(document.getElementById("cantidadBebidas").value) || 0;
-        cuenta += precioBebida * cantidadBebidas;
+        bebidas.forEach(bebida => {
+            const precioBebida = parseFloat(bebida.querySelector(".tipoBebida").value);
+            const cantidadBebidas = parseInt(bebida.querySelector(".cantidadBebidas").value) || 0;
+            cuenta += precioBebida * cantidadBebidas;
+        });
 
         document.getElementById("cuenta").textContent = `$${cuenta.toFixed(2)}`;
 
@@ -124,6 +154,7 @@
         document.getElementById("total").textContent = `$${total.toFixed(2)}`;
     }
 
+    // Función para enviar el recibo
     function enviarRecibo() {
         const correoCliente = document.getElementById("correoCliente").value;
         const total = document.getElementById("total").textContent;
@@ -138,4 +169,3 @@
 
 </body>
 </html>
-
