@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,83 +46,96 @@
     <h2>Pupusería Juan Pérez</h2>
     <form method="POST" action="/pagos/">
     {% csrf_token %}
-    
-    <label>De qué sabores son las Pupusas</label>
-    <div id="pupusaContainer">
-        <div class="pupusa-item">
-            <select name="tipoPupusa[]" onchange="calcularTotal()">
+
+    <div id="sabores-container">
+        <label>De qué sabores son las Pupusas</label>
+        <div class="sabor">
+            <select onchange="calcularTotal()" class="tipoPupusa">
                 <option value="0.35">Frijol $0.35</option>
                 <option value="0.50">Queso $0.50</option>
                 <option value="0.75">Revuelta $0.75</option>
             </select>
-            <input type="number" name="cantidadPupusas[]" placeholder="Cantidad" min="1" onchange="calcularTotal()">
+            <input type="number" placeholder="Cantidad" min="1" class="cantidadPupusas" onchange="calcularTotal()">
         </div>
     </div>
-    <button type="button" onclick="agregarPupusa()">Añadir otro sabor</button>
+    <button type="button" onclick="agregarSabor()">Añadir otro sabor</button>
 
     <label for="tipoBebida">Bebida</label>
-    <select id="tipoBebida" name="tipoBebida" onchange="calcularTotal()">
+    <select id="tipoBebida" onchange="calcularTotal()">
         <option value="0">Sin bebida</option>
         <option value="0.25">Bolsa con agua $0.25</option>
         <option value="0.50">Refresco $0.50</option>
         <option value="1.00">Jugo Natural $1.00</option>
     </select>
-    <input type="number" id="cantidadBebidas" name="cantidadBebidas" placeholder="Cantidad" min="0" onchange="calcularTotal()">
-    
-    <input type="email" id="correoCliente" name="correoCliente" placeholder="Dirección de correo cliente">
+    <input type="number" id="cantidadBebidas" placeholder="Cantidad Bebida" min="0" onchange="calcularTotal()">
+
+    <input type="email" id="correoCliente" placeholder="Dirección de correo cliente">
     
     <div>
         <label>Cuenta:</label>
         <span id="cuenta">$0.00</span>
     </div>
     
-    <input type="number" id="pagaCon" name="pagaCon" placeholder="Paga con" min="0" onchange="calcularTotal()">
+    <input type="number" id="pagaCon" placeholder="Paga con" min="0" onchange="calcularTotal()">
     
     <div>
         <label>Total:</label>
         <span id="total">$0.00</span>
     </div>
     
-    <button type="submit">Enviar Recibo</button>
+    <button type="button" onclick="enviarRecibo()">Enviar Recibo</button>
     </form>
 </div>
 
 <script>
-    function agregarPupusa() {
-        const pupusaContainer = document.getElementById("pupusaContainer");
-        const pupusaItem = document.createElement("div");
-        pupusaItem.classList.add("pupusa-item");
-        pupusaItem.innerHTML = 
-            <select name="tipoPupusa[]" onchange="calcularTotal()">
+    function agregarSabor() {
+        const container = document.getElementById("sabores-container");
+        const nuevoSabor = document.createElement("div");
+        nuevoSabor.classList.add("sabor");
+        nuevoSabor.innerHTML = `
+            <select onchange="calcularTotal()" class="tipoPupusa">
                 <option value="0.35">Frijol $0.35</option>
                 <option value="0.50">Queso $0.50</option>
                 <option value="0.75">Revuelta $0.75</option>
             </select>
-            <input type="number" name="cantidadPupusas[]" placeholder="Cantidad" min="1" onchange="calcularTotal()">
-        ;
-        pupusaContainer.appendChild(pupusaItem);
+            <input type="number" placeholder="Cantidad" min="1" class="cantidadPupusas" onchange="calcularTotal()">
+        `;
+        container.appendChild(nuevoSabor);
     }
 
     function calcularTotal() {
-        const tipoPupusaElems = document.getElementsByName("tipoPupusa[]");
-        const cantidadPupusaElems = document.getElementsByName("cantidadPupusas[]");
+        const pupusas = document.querySelectorAll(".sabor");
         let cuenta = 0;
-        
-        for (let i = 0; i < tipoPupusaElems.length; i++) {
-            const precioPupusa = parseFloat(tipoPupusaElems[i].value);
-            const cantidadPupusas = parseInt(cantidadPupusaElems[i].value) || 0;
+
+        pupusas.forEach(pupusa => {
+            const precioPupusa = parseFloat(pupusa.querySelector(".tipoPupusa").value);
+            const cantidadPupusas = parseInt(pupusa.querySelector(".cantidadPupusas").value) || 0;
             cuenta += precioPupusa * cantidadPupusas;
-        }
+        });
 
         const precioBebida = parseFloat(document.getElementById("tipoBebida").value);
         const cantidadBebidas = parseInt(document.getElementById("cantidadBebidas").value) || 0;
         cuenta += precioBebida * cantidadBebidas;
 
-        const pagaCon = parseFloat(document.getElementById("pagaCon").value) || 0;
         document.getElementById("cuenta").textContent = `$${cuenta.toFixed(2)}`;
-        document.getElementById("total").textContent = `$${(pagaCon - cuenta).toFixed(2)}`;
+
+        const pagaCon = parseFloat(document.getElementById("pagaCon").value) || 0;
+        const total = pagaCon - cuenta;
+        document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+    }
+
+    function enviarRecibo() {
+        const correoCliente = document.getElementById("correoCliente").value;
+        const total = document.getElementById("total").textContent;
+
+        if (correoCliente && total) {
+            alert(`Recibo enviado a ${correoCliente} con el total de ${total}`);
+        } else {
+            alert("Por favor, completa todos los campos antes de enviar el recibo.");
+        }
     }
 </script>
 
 </body>
 </html>
+
