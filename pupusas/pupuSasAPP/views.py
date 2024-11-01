@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from decimal import Decimal
 from .models import pagoPupas
 
@@ -43,7 +44,6 @@ def pagos(request):
         total = total_pupusas + total_bebidas
 
         # Guardar los datos en la base de datos
-        # Guardar los datos en la base de datos
         pedido = pagoPupas(
             cantidadPupusas=cantidadPupusas,
             tipoDePupusa=tipoDePupusa,
@@ -54,11 +54,15 @@ def pagos(request):
             total=total  # Asegúrate de que este campo esté definido en tu modelo
         )
         pedido.save()
+        
 
         # Renderizar una respuesta o redireccionar a una página de confirmación
-        return render(request, 'confirmacion.html', {'pedido': pedido})
+        return render(request, 'home.html', {'home': pedido})
     
-    return render(request, 'formulario_pagos.html')
+    return render(request, 'pagos.html')
+
+def __str__(self):
+            return f"Pedido de {self.cantidadPupusas} pupusas y {self.cantidadBebida} bebidas"
 
 def home(request):
     return render(request,'inicio.html')
