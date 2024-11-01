@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from decimal import Decimal
 from .models import pagoPupas
+from . import forms
 
 # Create your views here.
 
@@ -24,6 +25,10 @@ def sesion(request):
                 return render(request, 'registration/login.html', {'error_message': error_message})
 
     return render(request, 'registration/login.html') 
+
+def pagoPupas_new(request):
+    form = forms.createPost()
+    return render(request, 'POST/pagos.html',{'form':form})
 
 def pagospupas(request): 
     if request.method == 'POST': 

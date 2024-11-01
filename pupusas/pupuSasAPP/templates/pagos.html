@@ -45,8 +45,9 @@
 
 <div class="container">
     <h2>Pupusería Juan Pérez</h2>
-    <form method="POST" action="/pagos/">
+    <form method="POST" action="/pagos/" class="form-whith-validation" action="{% url 'POST/pagos/' %}" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form }}
 
         <!-- Sección de sabores de pupusas -->
         <div id="sabores-container">
@@ -98,6 +99,8 @@
 
         <!-- Botón para enviar el pedido -->
         <button type="submit">Enviar Pedido</button>
+        <!-- me quede aqui -->
+        <button class="form-submit-row">add POST</button>
     </form>
     <a href="{% url 'home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Inicio</a>
 </div>
