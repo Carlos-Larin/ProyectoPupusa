@@ -21,8 +21,6 @@ from django.conf import settings
 from pupuSasAPP import views
 
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('pagina/',views.index),

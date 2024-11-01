@@ -25,44 +25,57 @@ def sesion(request):
 
     return render(request, 'registration/login.html') 
 
-def pagos(request): 
+def pagospupas(request): 
     if request.method == 'POST': 
-        cantidadPupusas = int(request.POST['cantidadPupusas'])
-        tipoDePupusa = request.POST['tipoDePupusa']
-        cantidadBebida = int(request.POST['cantidadBebida'])
-        tipoDeBebida = request.POST['tipoDeBebida']
-        correoCliente = request.POST['correoCliente']
-        pagaCon = Decimal(request.POST['pagaCon'])
+        try:
+            cantidadPupusas = int(request.POST['cantidadPupusas'])
+            tipoDePupusa = request.POST['tipoDePupusa']
+            cantidadBebida = int(request.POST['cantidadBebida'])
+            tipoDeBebida = request.POST['tipoDeBebida']
+            correoCliente = request.POST['correoCliente']
+            pagaCon = Decimal(request.POST['pagaCon'])
 
-        # Calcular el precio de las pupusas y bebidas
-        precio_pupusa = {'Frijol': 0.35, 'Queso': 0.50, 'Revuelta': 0.75}.get(tipoDePupusa, 0)
-        precio_bebida = {'Sin bebida': 0, 'Bolsa con agua': 0.25, 'Refresco': 0.50, 'Jugo Natural': 1.00}.get(tipoDeBebida, 0)
+            # Calcular el precio de las pupusas y bebidas
+            precio_pupusa = {
+                'Frijol': 0.35,
+                'Queso': 0.50,
+                'Revuelta': 0.75,
+                'Loca': 1.00
+            }.get(tipoDePupusa, 0)
 
-        # Calcular el total
-        total_pupusas = precio_pupusa * cantidadPupusas
-        total_bebidas = precio_bebida * cantidadBebida
-        total = total_pupusas + total_bebidas
+            precio_bebida = {
+                'Sin bebida': 0,
+                'Bolsa con agua': 0.25,
+                'Refresco': 0.50,
+                'Jugo Natural': 1.00
+            }.get(tipoDeBebida, 0)
 
-        # Guardar los datos en la base de datos
-        pedido = pagoPupas(
-            cantidadPupusas=cantidadPupusas,
-            tipoDePupusa=tipoDePupusa,
-            cantidadBebida=cantidadBebida,
-            tipoDeBebida=tipoDeBebida,
-            correoCliente=correoCliente,
-            pagaCon=pagaCon,
-            total=total  # Asegúrate de que este campo esté definido en tu modelo
-        )
-        pedido.save()
+            # Calcular el total
+            total_pupusas = precio_pupusa * cantidadPupusas
+            total_bebidas = precio_bebida * cantidadBebida
+            total = total_pupusas + total_bebidas
+
+            # Guardar los datos en la base de datos
+            pedido = pagoPupas(
+                cantidadPupusas=cantidadPupusas,
+                tipoDePupusa=tipoDePupusa,
+                cantidadBebida=cantidadBebida,
+                tipoDeBebida=tipoDeBebida,
+                correoCliente=correoCliente,
+                pagaCon=pagaCon,
+                total=total  
+            )
+            pedido.save()
+
+            # Redirigir a la página principal después del guardado
+            return redirect('home') 
         
+        except ValueError:
+            error_message = "Por favor ingrese valores válidos."
+            return render(request, 'pagos.html', {'error_message': error_message})
 
-        # Renderizar una respuesta o redireccionar a una página de confirmación
-        return render(request, 'home.html', {'home': pedido})
-    
     return render(request, 'pagos.html')
 
-def __str__(self):
-            return f"Pedido de {self.cantidadPupusas} pupusas y {self.cantidadBebida} bebidas"
 
 def home(request):
     return render(request,'inicio.html')
