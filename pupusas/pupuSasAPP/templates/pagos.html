@@ -45,7 +45,7 @@
 
 <div class="container">
     <h2>Pupusería Juan Pérez</h2>
-    <form method="POST" action="/pagos/" class="form-whith-validation" action="{% url 'POST/pagos/' %}" enctype="multipart/form-data">
+    <form method="POST" action="/pagos/" class="form-whith-validation" action="{% url 'pagos' %}" enctype="multipart/form-data"><!--lo cambié el action -->
         {% csrf_token %}
         {{ form }}
 

@@ -1,19 +1,67 @@
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <title>Pupusas JP</title>
 </head>
 <body>
+    <style>
+        body{
+            background-color:burlywood;
+        }
+
+
+    </style>
     <center>
+     
     <h1>OPCIONES</h1>
-    <p style="color: crimson;">Bienvenido al menu principal</p>
-    <img src="{% static 'imagenes/pupusas.png' %}" width="200" height="210">
+    <img src="{% static 'imagenes/logotrans.png' %}" width="300" height="290"><br><br>
 </center>
 
-<nav class="menu">
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+          <img src="{% static 'imagenes/pagos.png' %}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Cobro/Facturación</h5>
+            <a href="{% url 'pagos' %}" class="btn btn-warning">Ir</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+          <img src="{% static 'imagenes/reportes.png' %}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Reportes de Ventas</h5>
+            <a href="{% url 'reportes' %}" class="btn btn-warning">Ir</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+          <img src="{% static 'imagenes/inventario.png' %}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Inventario</h5>
+            <a href="{% url 'inventario' %}" class="btn btn-warning">Ir</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+<!--  <nav class="menu">
     <ul>
         <li>
             <img src="{%static 'imagenes/pagos.png' %}"  >
@@ -29,8 +77,10 @@
         </li>
     
     </ul>
-</nav>
+</nav>!-->
 
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </html>
