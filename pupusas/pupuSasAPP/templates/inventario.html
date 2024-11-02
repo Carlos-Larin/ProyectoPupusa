@@ -1,12 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #FFB711;
+
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #868561;
+            color: #000000;
+        }
+        form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px 15px;
+            background-color: #808000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-eliminar, .btn-editar {
+            background-color: #f44336; /* Rojo */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-editar {
+            background-color: #2196F3; /* Azul */
+        }
+    </style>
 </head>
 <body>
-    <h1>INVENTARIO</h1>
-    
+
+<h1>Inventario de Productos</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Artículo</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="inventario">
+        <!-- Aquí se agregarán los artículos -->
+    </tbody>
+</table>
+
+<form id="formulario-inventario">
+    <input type="text" id="articulo" placeholder="Nombre del Artículo" required>
+    <input type="number" id="cantidad" placeholder="Cantidad" required min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+    <input type="number" id="precio" placeholder="Precio" required step="0.01">
+    <input type="submit" value="Agregar Artículo">
+</form>
+
+<script>
+    document.getElementById('formulario-inventario').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita que la página se recargue
+
+        const articulo = document.getElementById('articulo').value;
+        const cantidad = document.getElementById('cantidad').value;
+        const precio = document.getElementById('precio').value;
+
+        // Crear una nueva fila en la tabla
+        const nuevaFila = document.createElement('tr');
+        
+        nuevaFila.innerHTML = `
+          <td>${articulo}</td>
+          <td>${cantidad}</td>
+          <td>$${precio}</td>
+          <td><button class="btn-editar">Editar</button> <button class="btn-eliminar">Eliminar</button></td>`;
+        
+        // Agregar la nueva fila a la tabla
+        document.getElementById('inventario').appendChild(nuevaFila);
+
+        // Limpiar el formulario
+        this.reset();
+
+        // Añadir eventos para los botones de eliminar y editar
+        agregarEventosBotones(nuevaFila);
+    });
+
+    function agregarEventosBotones(fila) {
+      // Evento para el botón de eliminar
+      fila.querySelector('.btn-eliminar').addEventListener('click', function() {
+          fila.remove(); // Eliminar la fila
+      });
+
+      // Evento para el botón de editar
+      fila.querySelector('.btn-editar').addEventListener('click', function() {
+          const celdas = fila.querySelectorAll('td');
+          document.getElementById('articulo').value = celdas[0].innerText; // Nombre del artículo
+          document.getElementById('cantidad').value = celdas[1].innerText; // Cantidad
+          document.getElementById('precio').value = celdas[2].innerText.replace('$', ''); // Precio
+
+          // Eliminar la fila actual
+          fila.remove();
+      });
+    }
+
+    // Agregar eventos a los botones de eliminar y editar existentes (si los hay)
+    document.querySelectorAll('.btn-eliminar').forEach(button => {
+      button.addEventListener('click', function() {
+          const row = this.parentNode.parentNode; // Obtener la fila correspondiente
+          row.remove(); // Eliminar la fila
+      });
+    });
+
+    document.querySelectorAll('.btn-editar').forEach(button => {
+      button.addEventListener('click', function() {
+          const celdas = this.parentNode.parentNode.querySelectorAll('td');
+          document.getElementById('articulo').value = celdas[0].innerText; // Nombre del artículo
+          document.getElementById('cantidad').value = celdas[1].innerText; // Cantidad
+          document.getElementById('precio').value = celdas[2].innerText.replace('$', ''); // Precio
+
+          // Eliminar la fila actual
+          this.parentNode.parentNode.remove();
+      });
+    });
+</script>
+<a href="{% url 'home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Inicio</a>
 </body>
 </html>
